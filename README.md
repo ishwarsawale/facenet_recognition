@@ -22,6 +22,7 @@ import facenet_recognition
 facenet_recognition.align_input('input_images','aligned_images')
 ```
 
+#### Train only Classifer on input images
 
 ```python
 pre_model='./pre_model/20170511-185253.pb'
@@ -29,6 +30,8 @@ my_class ='./my_class/my_classifier.pkl'
 test_classifier_type = 'svm'
 weight= './my_class/model_small.yaml'
 
-test_train_classifier(input_dir,pre_model,my_class,weight,test_classifier_type)
+facenet_recognition.test_train_classifier(input_dir,pre_model,my_class,weight,test_classifier_type)
 
 ```
+
+Supported Models are: SVM, NN
