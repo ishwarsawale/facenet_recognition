@@ -30,6 +30,8 @@ from six import string_types, iteritems
 
 import numpy as np
 import tensorflow as tf
+import pkg_resources
+
 #from math import floor
 import cv2
 import os
@@ -273,22 +275,44 @@ class ONet(Network):
         (self.feed('prelu5') #pylint: disable=no-value-for-parameter
              .fc(10, relu=False, name='conv6-3'))
 
-def create_mtcnn(sess, model_path):
-    if not model_path:
-        model_path,_ = os.path.split(os.path.realpath(__file__))
+# def create_mtcnn(sess, model_path):
+#     if not model_path:
+#         model_path,_ = os.path.split(os.path.realpath(__file__))
 
+#     with tf.variable_scope('pnet'):
+#         data = tf.placeholder(tf.float32, (None,None,None,3), 'input')
+#         pnet = PNet({'data':data})
+#         pnet.load(os.path.join(model_path, 'det1.npy'), sess)
+#     with tf.variable_scope('rnet'):
+#         data = tf.placeholder(tf.float32, (None,24,24,3), 'input')
+#         rnet = RNet({'data':data})
+#         rnet.load(os.path.join(model_path, 'det2.npy'), sess)
+#     with tf.variable_scope('onet'):
+#         data = tf.placeholder(tf.float32, (None,48,48,3), 'input')
+#         onet = ONet({'data':data})
+#         onet.load(os.path.join(model_path, 'det3.npy'), sess)
+        
+#     pnet_fun = lambda img : sess.run(('pnet/conv4-2/BiasAdd:0', 'pnet/prob1:0'), feed_dict={'pnet/input:0':img})
+#     rnet_fun = lambda img : sess.run(('rnet/conv5-2/conv5-2:0', 'rnet/prob1:0'), feed_dict={'rnet/input:0':img})
+#     onet_fun = lambda img : sess.run(('onet/conv6-2/conv6-2:0', 'onet/conv6-3/conv6-3:0', 'onet/prob1:0'), feed_dict={'onet/input:0':img})
+#     return pnet_fun, rnet_fun, onet_fun
+
+def create_mtcnn(sess):
+    det1 = pkg_resources.resource_filename('facenet_recognition', 'det1.npy')
+    det2 = pkg_resources.resource_filename('facenet_recognition', 'det2.npy')
+    det3 = pkg_resources.resource_filename('facenet_recognition', 'det3.npy')
     with tf.variable_scope('pnet'):
         data = tf.placeholder(tf.float32, (None,None,None,3), 'input')
         pnet = PNet({'data':data})
-        pnet.load(os.path.join(model_path, 'det1.npy'), sess)
+        pnet.load(det1, sess)
     with tf.variable_scope('rnet'):
         data = tf.placeholder(tf.float32, (None,24,24,3), 'input')
         rnet = RNet({'data':data})
-        rnet.load(os.path.join(model_path, 'det2.npy'), sess)
+        rnet.load(det2, sess)
     with tf.variable_scope('onet'):
         data = tf.placeholder(tf.float32, (None,48,48,3), 'input')
         onet = ONet({'data':data})
-        onet.load(os.path.join(model_path, 'det3.npy'), sess)
+        onet.load(det3, sess)
         
     pnet_fun = lambda img : sess.run(('pnet/conv4-2/BiasAdd:0', 'pnet/prob1:0'), feed_dict={'pnet/input:0':img})
     rnet_fun = lambda img : sess.run(('rnet/conv5-2/conv5-2:0', 'rnet/prob1:0'), feed_dict={'rnet/input:0':img})

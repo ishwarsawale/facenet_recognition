@@ -407,22 +407,47 @@ class ONet(Network):
              .fc(10, relu=False, name='conv6-3'))
 
 
-def create_mtcnn(sess, model_path):
-    if not model_path:
-        model_path, _ = os.path.split(os.path.realpath(__file__))
+# def create_mtcnn(sess, model_path):
+#     if not model_path:
+#         model_path, _ = os.path.split(os.path.realpath(__file__))
 
+#     with tf.variable_scope('pnet'):
+#         data = tf.placeholder(tf.float32, (None, None, None, 3), 'input')
+#         pnet = PNet({'data': data})
+#         pnet.load(os.path.join(model_path, 'det1.npy'), sess)
+#     with tf.variable_scope('rnet'):
+#         data = tf.placeholder(tf.float32, (None, 24, 24, 3), 'input')
+#         rnet = RNet({'data': data})
+#         rnet.load(os.path.join(model_path, 'det2.npy'), sess)
+#     with tf.variable_scope('onet'):
+#         data = tf.placeholder(tf.float32, (None, 48, 48, 3), 'input')
+#         onet = ONet({'data': data})
+#         onet.load(os.path.join(model_path, 'det3.npy'), sess)
+
+#     def pnet_fun(img):
+#         return sess.run(('pnet/conv4-2/BiasAdd:0', 'pnet/prob1:0'), feed_dict={'pnet/input:0': img})
+
+#     def rnet_fun(img):
+#         return sess.run(('rnet/conv5-2/conv5-2:0', 'rnet/prob1:0'), feed_dict={'rnet/input:0': img})
+
+#     def onet_fun(img):
+#         return sess.run(('onet/conv6-2/conv6-2:0', 'onet/conv6-3/conv6-3:0', 'onet/prob1:0'), feed_dict={'onet/input:0': img})
+
+#     return pnet_fun, rnet_fun, onet_fun
+
+def create_mtcnn(sess):
     with tf.variable_scope('pnet'):
         data = tf.placeholder(tf.float32, (None, None, None, 3), 'input')
         pnet = PNet({'data': data})
-        pnet.load(os.path.join(model_path, 'det1.npy'), sess)
+        pnet.load(os.path.join('det1.npy'), sess)
     with tf.variable_scope('rnet'):
         data = tf.placeholder(tf.float32, (None, 24, 24, 3), 'input')
         rnet = RNet({'data': data})
-        rnet.load(os.path.join(model_path, 'det2.npy'), sess)
+        rnet.load(os.path.join('det2.npy'), sess)
     with tf.variable_scope('onet'):
         data = tf.placeholder(tf.float32, (None, 48, 48, 3), 'input')
         onet = ONet({'data': data})
-        onet.load(os.path.join(model_path, 'det3.npy'), sess)
+        onet.load(os.path.join('det3.npy'), sess)
 
     def pnet_fun(img):
         return sess.run(('pnet/conv4-2/BiasAdd:0', 'pnet/prob1:0'), feed_dict={'pnet/input:0': img})
@@ -434,6 +459,7 @@ def create_mtcnn(sess, model_path):
         return sess.run(('onet/conv6-2/conv6-2:0', 'onet/conv6-3/conv6-3:0', 'onet/prob1:0'), feed_dict={'onet/input:0': img})
 
     return pnet_fun, rnet_fun, onet_fun
+
 
 
 def detect_face(img, pnet, rnet, onet):

@@ -1,0 +1,3 @@
+include facenet_recognition/det1.npy
+include facenet_recognition/det2.npy
+include facenet_recognition/det3.npy

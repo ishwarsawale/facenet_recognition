@@ -8,8 +8,10 @@ import os
 import argparse
 import tensorflow as tf
 import numpy as np
-import facenet
-import detect_face
+# import facenet
+from facenet_recognition import facenet
+# import detect_face
+from facenet_recognition import detect_face
 import random
 from time import sleep
 from datetime import datetime
@@ -29,7 +31,7 @@ def align_data(input_dir='./input_dir/', output_dir='./out_dir'):
         gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.5)
         sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options, log_device_placement=False))
         with sess.as_default():
-            pnet, rnet, onet = detect_face.create_mtcnn(sess, './mtcnn_files')
+            pnet, rnet, onet = detect_face.create_mtcnn(sess)
 
     minsize = 20  # minimum size of face
     threshold = [0.6, 0.7, 0.7]  # three steps's threshold
@@ -113,4 +115,5 @@ def align_data(input_dir='./input_dir/', output_dir='./out_dir'):
     os.remove(bounding_boxes_filename)
     print(datetime.now() - startTime) 
     
-# align_data()
+# align_data('/Users/ishwarsawale/working_demos/face_rec_demo/input_dir',
+# '/Users/ishwarsawale/working_demos/face_rec_demo/out_dir')

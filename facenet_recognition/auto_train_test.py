@@ -5,7 +5,8 @@ from __future__ import print_function
 import tensorflow as tf
 import numpy as np
 import argparse
-import facenet
+# import facenet
+from facenet_recognition import facenet
 import os
 import sys
 import math
@@ -22,7 +23,8 @@ from keras.models import load_model
 from keras.models import model_from_yaml
 from sklearn.model_selection import StratifiedKFold
 import keras
-import align_images as align
+# import align_images as align
+from facenet_recognition import align_images as align
 from datetime import datetime
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
