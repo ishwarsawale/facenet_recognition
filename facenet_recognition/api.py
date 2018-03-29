@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import align_images as align
-import auto_train_test as classifier
+from facenet_recognition import align_images as align
+from facenet_recognition import auto_train_test as classifier
 import os, os.path
 
 def pre_check(directory):
