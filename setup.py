@@ -7,7 +7,7 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    'tensorflow==1.2',
+    'tensorflow==1.15.2',
     'scipy',
     'scikit-learn',
     'opencv-python',
